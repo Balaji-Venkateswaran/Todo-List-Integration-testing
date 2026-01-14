@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 describe('Todo app integration', () => {
-  it('shows the empty state and summary on first load', () => {
+  it('shows the first load', () => {
     render(<App />)
 
     expect(screen.getByText('Todo List')).toBeInTheDocument()
@@ -14,14 +14,14 @@ describe('Todo app integration', () => {
     ).toBeInTheDocument()
   })
 
-  it('adds a todo and updates the summary', async () => {
+  it('adds a todo and updates', async () => {
     const user = userEvent.setup()
     render(<App />)
 
     await user.type(screen.getByLabelText('New todo'), 'Test')
     await user.click(screen.getByRole('button', { name: 'Add' }))
 
-    expect(screen.getByText('Buy milk')).toBeInTheDocument()
+    expect(screen.getByText('Test')).toBeInTheDocument()
     expect(screen.getByText('1 task(s)')).toBeInTheDocument()
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
@@ -37,6 +37,8 @@ describe('Todo app integration', () => {
     ).toBeInTheDocument()
 
     await user.type(screen.getByLabelText('New todo'), 'Plan trip')
+        await user.click(screen.getByRole('button', { name: 'Add' }))
+
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
@@ -44,7 +46,7 @@ describe('Todo app integration', () => {
     const user = userEvent.setup()
     render(<App />)
 
-    await user.type(screen.getByLabelText('New todo'), 'Test1')
+    await user.type(screen.getByLabelText('New todo'), '$@!!')
     await user.click(screen.getByRole('button', { name: 'Add' }))
 
     expect(
@@ -56,7 +58,7 @@ describe('Todo app integration', () => {
     const user = userEvent.setup()
     render(<App />)
 
-    await user.type(screen.getByLabelText('New todo'), 'Test 2')
+    await user.type(screen.getByLabelText('New todo'), 'Write tests')
     await user.click(screen.getByRole('button', { name: 'Add' }))
 
     const confirmSpy = vi
